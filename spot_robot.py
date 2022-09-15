@@ -9,7 +9,6 @@ import time
 
 client = Client(KEY, SECRET)
 
-
 telegram_delay = 12
 bot_token = '5716671380:AAGBMesgbDX9VG3szrHzSLwf-TsQBlbzqL0'
 chat_id = '1275941438'
@@ -35,8 +34,6 @@ def getTPSLfrom_telegram():
                 telegram_bot_sendtext('Hello. How are you?')
 
 
-
-
 def telegram_bot_sendtext(bot_message):
     bot_token2 = bot_token
     bot_chatID = chat_id
@@ -44,10 +41,12 @@ def telegram_bot_sendtext(bot_message):
     response = requests.get(send_text)
     return response.json()
 
+
 def prt(message):
     # telegram message
     telegram_bot_sendtext(message)
-    print(message)
+    print(str(message))
+
 
 # Trade
 
@@ -60,9 +59,6 @@ def top_coin():
     return top_coin
 
 
-# print(f'Find Spot:  {top_coin()}')
-
-
 def last_data(symbol, interval, lookback):
     frame = pd.DataFrame(client.get_historical_klines(symbol, interval, lookback + 'min ago UTC'))
     frame = frame.iloc[:, :6]
@@ -73,24 +69,24 @@ def last_data(symbol, interval, lookback):
     return frame
 
 
-def strategy(by_amt, SL=0.985, Target=1.02, open_position=False):
+def strategy(buy_amt, SL=0.985, Target=1.02, open_position=False):
     try:
         asset = top_coin()
         df = last_data(asset, '1m', '120')
-
     except:
         time.sleep(61)
         asset = top_coin()
         df = last_data(asset, '1m', '120')
 
-    qty = round(by_amt / df.Close.iloc[-1], 1)
+    qty = round(buy_amt / df.Close.iloc[-1], 1)
+
     if ((df.Close.pct_change() + 1).cumprod()).iloc[-1] > 1:
         prt(asset)
-        prt(df.Close.iloc[-1])
-        prt(qty)
-        order = client.create_order(symbol=asset, side='BUY', type='MARKET', quantyty=qty)
-        prt(order)
-        buy_price = float(order['fills'][0]['price'])
+        print(df.Close.iloc[-1])
+        print(qty)
+        order = client.create_order(symbol=asset, side='BUY', type='MARKET', quantity=qty)
+        print(order)
+        buyprice = float(order['fills'][0]['price'])
         open_position = True
 
         while open_position:
@@ -101,12 +97,12 @@ def strategy(by_amt, SL=0.985, Target=1.02, open_position=False):
                 time.sleep(61)
                 df = last_data(asset, '1m', '2')
 
-            prt(f'Price ' + str(df.Close[-1]))
-            prt(f'Target ' + str(buy_price * Target))
-            prt(f'Stop ' + str(buy_price * SL))
-            if df.Close[-1] <= buy_price * SL or df.Close[-1] >= buy_price * Target:
-                order = client.create_order(symbol=asset, side='SELL', type='MARKET', quantyty=qty)
-                prt(order)
+            print(f'Price ' + str(df.Close[-1]))
+            print(f'Target ' + str(buyprice * Target))
+            print(f'Stop ' + str(buyprice * SL))
+            if df.Close[-1] <= buyprice * SL or df.Close[-1] >= buyprice * Target:
+                order = client.create_order(symbol=asset, side='SELL', type='MARKET', quantity=qty)
+                print(order)
                 break
     else:
         prt('No find')
@@ -114,6 +110,4 @@ def strategy(by_amt, SL=0.985, Target=1.02, open_position=False):
 
 
 while True:
-    strategy(10)
-
-
+    strategy(15)
