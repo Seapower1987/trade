@@ -182,7 +182,7 @@ def trade():
                                     break
                                 except Exception as error:
                                     print('Error 1022')
-                                    continue
+                                    
                         else:
                             break
                 elif one1 < -0.5:
