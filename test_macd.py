@@ -167,20 +167,20 @@ def trade():
                             macd_list1.clear()
                             break
                         elif stop_target > 0.5:
-                            while True:
-                                try:
-                                    prt('Take Profit')
-                                    order_sell = client.futures_create_order(symbol='DOGEUSDT', quantity=quantity,
-                                                                             type='MARKET',
-                                                                             side='SELL')
-                                    prt(str(order_sell))
-                                    print(price)
-                                    macd_list1.clear()
-                                    trend_list.clear()
-                                    break
-                                except Exception as error:
-                                    print('Error 1022')
-                                    continue
+
+                            try:
+                                prt('Take Profit')
+                                order_sell = client.futures_create_order(symbol='DOGEUSDT', quantity=quantity,
+                                                                         type='MARKET',
+                                                                         side='SELL')
+                                prt(str(order_sell))
+                                print(price)
+                                macd_list1.clear()
+                                trend_list.clear()
+                                break
+                            except Exception as error:
+                                print('Error 1022')
+                                continue
                         else:
                             break
                 elif one1 < -0.5:
@@ -198,7 +198,7 @@ def trade():
 
                     except Exception as error:
                         prt('Error 1022')
-                        continue
+
                 else:
                     prt(f'Trade in progress')
                     prt(f'MACD Indicator: {str(one1)}')
