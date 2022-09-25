@@ -103,8 +103,6 @@ def strategy(strat=False):
     ind = float(one)
     print(ind)
 
-
-
     # prt('Robot is Running)
 
     if ind > 0.2 and ta.trend.macd_diff(df.Close).iloc[-2] < 0:
@@ -182,25 +180,25 @@ def trade():
                                     break
                                 except Exception as error:
                                     print('Error 1022')
-                                    
+                                    continue
                         else:
                             break
                 elif one1 < -0.5:
-                    while True:
-                        print(stop_target)
-                        try:
 
-                            prt('Stop Loss')
-                            order_sell = client.futures_create_order(symbol='DOGEUSDT', quantity=quantity,
-                                                                     type='MARKET',
-                                                                     side='SELL')
-                            prt(str(order_sell))
-                            print(price)
-                            trend_list.clear()
-                            break
-                        except Exception as error:
-                            prt('Error 1022')
-                            continue
+                    print(stop_target)
+                    try:
+
+                        prt('Stop Loss')
+                        order_sell = client.futures_create_order(symbol='DOGEUSDT', quantity=quantity,
+                                                                 type='MARKET',
+                                                                 side='SELL')
+                        prt(str(order_sell))
+                        print(price)
+                        trend_list.clear()
+
+                    except Exception as error:
+                        prt('Error 1022')
+                        continue
                 else:
                     prt(f'Trade in progress')
                     prt(f'MACD Indicator: {str(one1)}')
@@ -212,31 +210,31 @@ def trade():
             elif trend == 'sell':
 
                 if one1 < -2.0:
-                    while True:
-                        print(macd1, ' ', one1)
-                        print(stop_target)
-                        if stop_target > 0:
-                            macd_list1.clear()
-                            prt('Waint Target')
 
-                            break
-                        elif stop_target < -0.5:
-                            prt('Take Profit')
-
-                            try:
-                                order_buy = client.futures_create_order(symbol='DOGEUSDT', quantity=quantity,
-                                                                        type='MARKET',
-                                                                        side='BUY')
-                                trend_list.clear()
-                                prt(str(order_buy))
-                                print(price)
-                                print(macd1, ' ', one1)
-                                break
-
-                            except Exception as error:
-                                print('Error 1022')
+                    print(macd1, ' ', one1)
+                    print(stop_target)
+                    if stop_target > 0:
+                        macd_list1.clear()
+                        prt('Waint Target')
 
                         break
+                    elif stop_target < -0.5:
+                        prt('Take Profit')
+
+                        try:
+                            order_buy = client.futures_create_order(symbol='DOGEUSDT', quantity=quantity,
+                                                                    type='MARKET',
+                                                                    side='BUY')
+                            trend_list.clear()
+                            prt(str(order_buy))
+                            print(price)
+                            print(macd1, ' ', one1)
+
+
+                        except Exception as error:
+                            print('Error 1022')
+
+                    break
                 elif one1 > 0.5:
 
                     try:
