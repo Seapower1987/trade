@@ -1,0 +1,9 @@
+""" Trade robot """
+
+KEY = 'ns0vwl0y0H1INSNAUD8RDdlzpBbeWTxTY8QrhR3692Arzun5HyKcQQF4kp7TTg6b'
+SECRET = 'xivRuUtK9E9S8fkizJEg1jGxMzfirZeaQqB4v07toiD4rd51e3nnNMA5WSG0dYKX'
+
+''' Sorce API '''
+
+SKEY = 'OpJLjuOWRygpv89yr9rPgkqWuuJoCBv1fQQdhMEhrIU8Tsj0ACcG1XwTHvsp0cHP'
+SSECRET = 'tGboOsTHv3PNG5Dwftu0Up0H85hte5B0s7axBjc2UPQEJHgE1sn2igtWj9MXUZVj'
