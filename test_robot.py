@@ -9,6 +9,8 @@ timeframe = '1h'
 
 quantity = 106
 
+
+
 klines = client.klines(symbol, timeframe)
 df = pd.DataFrame(klines).iloc[:, :6]
 df.columns = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume']
@@ -41,17 +43,39 @@ def open_order(symbol, side, quantity):
     order = client.new_order(symbol=symbol, side=side, type='MARKET', quantity=quantity)
     print('Order opened: ', order)
 
-in_position = False
+
+take_profit = df['signal'].iloc[-1]
 
 
-while True:
+def trade():
+    in_position = False
     if df['signal'].iloc[-1] == 1 and in_position == False:
         open_order(symbol, 'BUY', quantity=quantity)
         in_position = True
+        while True:
+
+            if take_profit == 0:
+                print('Close order')
+                open_order(symbol, 'SELL', quantity=quantity)
+                in_position = False
+
+                break
+
     elif df['signal'].iloc[-1] == -1 and in_position == False:
         open_order(symbol, 'SELL', quantity=quantity)
         in_position = True
+        while True:
+            print(take_profit)
+            if take_profit == 0:
+                print('Close order')
+                open_order(symbol, 'BUY', quantity=quantity)
+                in_position = False
+
+                break
+
     else:
-        pass
+        print('Signal not found ', str(take_profit))
 
 
+while True:
+    trade()
